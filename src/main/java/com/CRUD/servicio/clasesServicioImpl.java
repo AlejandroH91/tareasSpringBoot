@@ -3,34 +3,26 @@ package com.CRUD.servicio;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import entidad.Clases;
+import com.CRUD.repository.ClasesRepository;
+import com.CRUD.entidad.*;
 @Service
 public class clasesServicioImpl implements clasesServicio{
 
 	private final List<Clases> listaClases = new ArrayList<>();
 	
-	public clasesServicioImpl() {
-        agregarClases(new Clases("Tenis",10,1));//Nombre, capacidad, numero_pista
-        agregarClases(new Clases("Volleyball",16,2));
-        agregarClases(new Clases("Fútbol",14,3));
-        agregarClases(new Clases("Baloncesto",12,4));
-    }
+	@Autowired
+	 private ClasesRepository repository;
 
 	@Override
 	public List<Clases> obtenerClases() {
-	    return listaClases;
+	    return repository.findAll();
 	}
 
 	@Override
 	public Clases obtenerClasesPorId(int id) {
-	    for (Clases clase : listaClases) {
-	        if (clase.getId() == id) {
-	            return clase;
-	        }
-	    }
-	    return null;
+		 return repository.findById(id).orElse(null);
 	}
 
 	/*
@@ -38,25 +30,24 @@ public class clasesServicioImpl implements clasesServicio{
 	 * agregamos las clases a la lista.*/
 	@Override
 	public void agregarClases(Clases clase) {
-		listaClases.add(clase);
+		repository.save(clase);
 		
 	}
 	
 	@Override
-	public void actualizarClases(int id, Clases claseActualizada) {
-	    for (Clases clase : listaClases) {
-	        if (clase.getId() == id) {
-	        	clase.setNombre(claseActualizada.getNombre());
-	        	clase.setCapacidad(claseActualizada.getCapacidad());
-	        	clase.setNum_pista(claseActualizada.getNum_pista());
-	            return;
-	        }
+	public void actualizarClases(int id, Clases clase) {
+		Clases existente = repository.findById(id).orElse(null);
+	    if (existente != null) {
+	        existente.setNombre(clase.getNombre());
+	        existente.setCapacidad(clase.getCapacidad());
+	        existente.setNum_pista(clase.getNum_pista());
+	        repository.save(existente);
 	    }
 	}
 	
 	@Override
 	public void eliminarClases(int id) {
-	    listaClases.removeIf(clase -> clase.getId() == id);
+		repository.deleteById(id);
 	}
 
 }

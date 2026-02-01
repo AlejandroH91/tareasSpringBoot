@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import entidad.Clases;
+import com.CRUD.entidad.*;
 
 public interface clasesServicio {
 	List<Clases> obtenerClases();
