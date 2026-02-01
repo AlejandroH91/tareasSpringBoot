@@ -1,4 +1,4 @@
-package servicio.clases;
+package com.CRUD.servicio;
 
 import java.util.ArrayList;
 import java.util.List;

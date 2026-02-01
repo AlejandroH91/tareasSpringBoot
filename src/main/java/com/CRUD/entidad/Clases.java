@@ -1,4 +1,4 @@
-package entidad;
+package com.CRUD.entidad;
 
 import java.util.Date;
 //Imports necesarios para poder usar las etiquetas de Entity para generar tablas en la BD.
