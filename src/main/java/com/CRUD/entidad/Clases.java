@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 @Entity
 
 public class Clases{
@@ -16,8 +18,14 @@ public class Clases{
 	//El generated Value para hacerlo autoincremental.
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@NotBlank
+	@NotNull
 	private String nombre;
+	@NotBlank
+	@NotNull
 	private int capacidad;
+	@NotBlank
+	@NotNull
 	private int num_pista;
 	
 	
