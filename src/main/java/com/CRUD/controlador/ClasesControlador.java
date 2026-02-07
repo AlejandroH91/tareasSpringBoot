@@ -1,6 +1,9 @@
 package com.CRUD.controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,27 +11,33 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.CRUD.entidad.Clases;
-import com.CRUD.servicio.clasesServicio;
+import com.CRUD.servicio.ClasesServicio;
 
 
 
 
 @Controller
 @RequestMapping("/clases")
-public class clasesControlador{
+public class ClasesControlador{
 	
 	@Autowired //Lo ponemos para usar el servicio dentro del controlador
-	private clasesServicio servicio;
+	private ClasesServicio servicio;
 	
-	public clasesControlador(clasesServicio servicio) {
+	public ClasesControlador(ClasesServicio servicio) {
 	    this.servicio = servicio;
 	}
 	
 	@GetMapping
-	public String listarClases(Model modelo) {
-	    modelo.addAttribute("clases", servicio.obtenerClases());
+	public String listarClases(Model modelo,
+	                           @RequestParam(defaultValue = "0") int page) {
+	    int tamañoPagina = 10; // cuántas clases mostrar por página
+	    Pageable pageable = PageRequest.of(page, tamañoPagina);//crea un objeto pageable indicando qué página y cuántos elementos por página.
+	    Page<Clases> clasesPage = servicio.obtenerClases(pageable);
+
+	    modelo.addAttribute("clases", clasesPage);
 	    return "clases/listar";
 	}
 	

@@ -1,0 +1,7 @@
+com/CRUD/controlador/InicioControlador.class
+com/CRUD/servicio/ClasesServicioImpl.class
+com/CRUD/PruebaApplication.class
+com/CRUD/repository/ClasesRepository.class
+com/CRUD/controlador/ClasesControlador.class
+com/CRUD/entidad/Clases.class
+com/CRUD/servicio/ClasesServicio.class

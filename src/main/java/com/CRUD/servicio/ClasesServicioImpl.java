@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.CRUD.repository.ClasesRepository;
 import com.CRUD.entidad.*;
 @Service
-public class clasesServicioImpl implements clasesServicio{
+public class ClasesServicioImpl implements ClasesServicio{
 
 	private final List<Clases> listaClases = new ArrayList<>();
 	
@@ -30,8 +32,7 @@ public class clasesServicioImpl implements clasesServicio{
 	 * agregamos las clases a la lista.*/
 	@Override
 	public void agregarClases(Clases clase) {
-		repository.save(clase);
-		
+		repository.save(clase);	
 	}
 	
 	@Override
@@ -49,5 +50,10 @@ public class clasesServicioImpl implements clasesServicio{
 	public void eliminarClases(int id) {
 		repository.deleteById(id);
 	}
+	
+	@Override
+    public Page<Clases> obtenerClases(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
 
 }
