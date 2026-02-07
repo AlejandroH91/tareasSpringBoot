@@ -1,33 +1,42 @@
 package com.CRUD.servicio;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.CRUD.entidad.Usuarios;
 import com.CRUD.repository.UsuarioRepository;
 
-import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UsuarioServicio implements UserDetailsService {
+public class UsuarioServicio {
 
     @Autowired
     private UsuarioRepository usuarioRepo;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Buscar usuario en la BD
-        Usuarios usuario = usuarioRepo.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
+    // Listar todos los usuarios
+    public List<Usuarios> listarUsuarios() {
+        return usuarioRepo.findAll();
+    }
 
-        // Crear UserDetails para Spring Security
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(usuario.getUsername())
-                .password(usuario.getPassword())
-                .roles(usuario.isEsAdmin() ? "ADMIN" : "USUARIO") // asignamos rol según el boolean
-                .build();
+    // Buscar usuario por ID
+    public Optional<Usuarios> buscarPorId(Integer id) {
+        return usuarioRepo.findById(id);
+    }
+
+    // Buscar usuario por username
+    public Optional<Usuarios> buscarPorUsername(String username) {
+        return usuarioRepo.findByUsername(username);
+    }
+
+    // Guardar o actualizar usuario
+    public Usuarios guardarUsuario(Usuarios usuario) {
+        return usuarioRepo.save(usuario);
+    }
+
+    // Eliminar usuario por ID
+    public void eliminarUsuario(Integer id) {
+        usuarioRepo.deleteById(id);
     }
 }
