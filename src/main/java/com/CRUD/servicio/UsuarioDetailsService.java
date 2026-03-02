@@ -30,17 +30,20 @@ public class UsuarioDetailsService implements UserDetailsService {//Interfaz de 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuarios usuario = usuariosRepositorio.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        
         /*
          * GrantedAuthority es un tipo de dato que trae la interfaz de seguridad de Spring
          * y con el reconoce de mi entidad usuario, que si el username cumple con el 
          * boolean es_Admin, le pone "ROLE_ADMIN" para entender que cumple la condición.*/
         List<GrantedAuthority> roles = new ArrayList<>();
         if (usuario.isEsAdmin()) {
-            roles.add(new SimpleGrantedAuthority("ROLE_ADMIN")); // Spring necesita "ROLE_" prefix
+            roles.add(new SimpleGrantedAuthority("ROLE_ADMIN")); // Spring necesita "ROLE_" como prefijo
         } else {
             roles.add(new SimpleGrantedAuthority("ROLE_USER"));
         }
+        
+ 
 
-        return new User(usuario.getUsername(),"{noop}" + usuario.getPassword(), roles);
+        return new User(usuario.getUsername(),usuario.getPassword(), roles);
     }
 }

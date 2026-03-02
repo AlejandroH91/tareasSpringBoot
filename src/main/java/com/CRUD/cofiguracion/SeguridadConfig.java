@@ -16,11 +16,11 @@ import com.CRUD.servicio.UsuarioServicio;
 @EnableMethodSecurity
 public class SeguridadConfig {
 
-    private final UsuarioServicio usuarioServicio;
+    /*private final UsuarioServicio usuarioServicio;
 
     public SeguridadConfig(UsuarioServicio usuarioServicio) {
         this.usuarioServicio = usuarioServicio;
-    }
+    }*/
 
     // Bean para codificar contraseñas
     @Bean
@@ -42,13 +42,11 @@ public class SeguridadConfig {
             .authorizeHttpRequests(auth -> auth
                 // Rutas públicas
                 .requestMatchers("/", "/login", "/css/**", "/js/**").permitAll()
-                // Clases: solo ADMIN
-                .requestMatchers("/clases/**").hasRole("ADMIN")
-                // El resto: autenticado
-                .anyRequest().authenticated()
+                .requestMatchers("/clases/**").hasRole("ADMIN") // Clases, solo para que entre Admin.
+                .anyRequest().authenticated()// El resto: autenticado
             )
             .formLogin(form -> form
-                .loginPage("/login")          // Página de login personalizada
+                .loginPage("/login")     
                 .defaultSuccessUrl("/clases", true)
                 .permitAll()
             )
